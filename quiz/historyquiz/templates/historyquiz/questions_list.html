@@ -1,0 +1,70 @@
+{% extends 'historyquiz/base.html' %}
+{% load static %}
+
+{% block meta_tags %}<meta name="csrf-token" content="{{ csrf_token }}">{% endblock %}
+
+{% block title %}{{category.name}}{% endblock %}
+
+{% block content %}
+<a href="/" class="back_arrow">
+    <img src="{% static 'historyquiz/icon/strela.svg' %}" class="header__icon">
+</a>
+<h1>{{category.name}}</h1>
+<button class="btn start_quiz">Начать квиз</button>
+<h2>{{category.topic.name}}</h2>
+<ul class="questions__list">
+    {% for item in questions %}
+        <li class="questions__item list__cart">
+            <h4 class="questions__text">
+                {{ item.text }}
+            </h4>
+            <p class="questions__answer">
+                {{ item.get_correct_answer  }}
+            </p>
+        </li>
+    {% empty %}
+        <li class="list-catigory-item">Нет доступных объектов.</li>
+    {% endfor %}
+</ul>
+
+<div class="quiz">
+    <ul class="quiz__list">
+        {% for item in questions %}
+            <li class="quiz__item">
+                <div class="quiz__top-box">
+                    <button class="quiz__close">x</button>
+                </div>
+                {% if item.image %}
+                    <img src="{{ item.image.url }}">     
+                {% endif %}
+                <h3>{{ item.text }}</h3>
+                <div data-id="{{ item.id }}" class="quiz__qustion">
+                    <div class="quiz__answer">
+                        <label for="answer_0{{ item.id }}">
+                            <span>{{ item.get_correct_answer }}</span>
+                            <input type="radio" name="quiz__answer" id="answer_0{{ item.id }}" data-correct="1">
+                        </label>
+
+                        {% for answer in item.get_incorrect_answers %}
+                        <label for="answer_{{ forloop.counter }}{{ item.id }}">
+                            <span>{{ answer }}</span>
+                            <input type="radio" name="quiz__answer" id="answer_{{ forloop.counter }}{{ item.id }}" data-correct="0">
+                        </label>
+                        {% endfor %}
+                    </div>
+                    <button class="btn quiz__btn-answer" disabled>Ответить</button>
+                    <button class="btn color__interaction next_question" style="display: none;" >Дальше</button>
+                </div>
+            </li>
+        {% empty %}
+            <li>Нет доступных объектов.</li>
+        {% endfor %}
+        <li class="quiz__item">
+            <h3 class="finalMes">Ты молодец!!!</h3>
+            <button class="btn quiz__end">Закончить</button>
+        </li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block scripts %}<script src="{% static 'historyquiz/js/script.js' %}"></script>{% endblock %}

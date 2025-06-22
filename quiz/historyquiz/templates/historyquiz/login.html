@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход</title>
+    <link rel="stylesheet" href="{% static 'historyquiz/css/styles.css' %}">
+</head>
+<body>
+    <div class="cont-login">
+        <h1>Вход</h1>
+        <form method="post" class="form-login">
+            {% csrf_token %}
+            <label for="username">Имя пользователя:</label>
+            <input type="text" name="username" required>
+            <label for="password">Пароль:</label>
+            <input type="password" name="password" required>
+            <button class="btn" type="submit">Войти</button>
+        </form>
+    </div>
+</body>
+</html>

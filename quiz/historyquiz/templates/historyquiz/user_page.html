@@ -1,0 +1,21 @@
+{% extends 'historyquiz/base.html' %}
+{% load static %}
+
+{% block meta_tags %}{% endblock %}
+
+{% block title %}{{ user.username }}{% endblock %}
+
+{% block content %}
+<a href="/" class="back_arrow">
+    <img src="{% static 'historyquiz/icon/strela.svg' %}" class="header__icon">
+</a>
+<h1>Добро пожаловать, {{ user.first_name }}!</h1>
+
+<form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button class="btn btn_exit" type="submit">Выйти из аккаунта</button>
+</form>
+
+{% endblock %}
+
+{% block scripts %}{% endblock %}

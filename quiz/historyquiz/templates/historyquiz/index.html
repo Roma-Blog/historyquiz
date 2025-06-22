@@ -1,0 +1,22 @@
+{% extends 'historyquiz/base.html' %}
+
+{% block title %}Впросы по категориям{% endblock %}
+
+{% block content %}
+<h1>Впросы по категориям</h1>
+
+{% for topic in topics %}
+    <h3>{{topic.name}}</h3>
+    <ul class="list-catigory">
+        {% for category in topic.topic.all %}
+            <li class="list-catigory-item">
+                <a href="{% url 'questions_list' category.slug %}" class="list__cart">
+                    {{ category.name }}
+                </a>
+            </li>
+        {% empty %}
+            <li class="list-catigory-item">Нет доступных объектов.</li>
+        {% endfor %}
+    </ul>
+{% endfor %}
+{% endblock %}

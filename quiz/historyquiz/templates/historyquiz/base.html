@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block meta_tags %}{% endblock %}
+    <title>{% block title %}App{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'historyquiz/css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <a href="/" class="header__link">
+            <img src="{% static 'historyquiz/icon/home.svg' %}" class="header__icon">
+        </a>
+        <a href="" class="header__link">
+            <img src="{% static 'historyquiz/icon/favourite.svg' %}" class="header__icon">
+        </a>
+        <a href="{% url 'page_user' %}" class="header__link">
+            <img src="{% static 'historyquiz/icon/user.svg' %}" class="header__icon">
+        </a>
+    </header>
+    <main>
+        {% block content %}
+        <!-- Контент страниц будет вставлен сюда -->
+        {% endblock %}
+    </main>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
