@@ -179,3 +179,19 @@ label:has(input[type="radio"]:checked) {
 .quiz__qustion{
     width: 100%;
 }
+
+
+.quiz__answer input[type="text"] {
+    padding: 8px;
+    font-size: 12px;
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+.quiz__answer_mes{
+    text-align: center;
+    color: #771616;
+    padding: 8px 0;
+    font-weight: 700;
+    grid-column-start: 1;
+    grid-column-end: 3;
+}

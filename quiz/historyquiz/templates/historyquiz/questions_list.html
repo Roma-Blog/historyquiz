@@ -38,20 +38,28 @@
                     <img src="{{ item.image.url }}">     
                 {% endif %}
                 <h3>{{ item.text }}</h3>
-                <div data-id="{{ item.id }}" class="quiz__qustion">
-                    <div class="quiz__answer">
-                        <label for="answer_0{{ item.id }}">
-                            <span>{{ item.get_correct_answer }}</span>
-                            <input type="radio" name="quiz__answer" id="answer_0{{ item.id }}" data-correct="1">
-                        </label>
 
-                        {% for answer in item.get_incorrect_answers %}
-                        <label for="answer_{{ forloop.counter }}{{ item.id }}">
-                            <span>{{ answer }}</span>
-                            <input type="radio" name="quiz__answer" id="answer_{{ forloop.counter }}{{ item.id }}" data-correct="0">
-                        </label>
-                        {% endfor %}
-                    </div>
+                <div data-id="{{ item.id }}" data-type="{{item.answer_type}}" class="quiz__qustion">
+                    {% if item.answer_type == 'answer_options' %}
+                        <div class="quiz__answer">
+                            <label for="answer_0{{ item.id }}">
+                                <span>{{ item.get_correct_answer }}</span>
+                                <input type="radio" name="quiz__answer" id="answer_0{{ item.id }}" data-correct="1">
+                            </label>
+
+                            {% for answer in item.get_incorrect_answers %}
+                            <label for="answer_{{ forloop.counter }}{{ item.id }}">
+                                <span>{{ answer }}</span>
+                                <input type="radio" name="quiz__answer" id="answer_{{ forloop.counter }}{{ item.id }}" data-correct="0">
+                            </label>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="quiz__answer">
+                            <input type="text" placeholder="Ваш ответ" data-correct="{{item.get_correct_answer}}">
+                            <p class="quiz__answer_mes" style="display: none;">Правильный ответ:<br>{{item.get_correct_answer}}</p>
+                        </div>
+                    {% endif %}
                     <button class="btn quiz__btn-answer" disabled>Ответить</button>
                     <button class="btn color__interaction next_question" style="display: none;" >Дальше</button>
                 </div>
@@ -59,7 +67,7 @@
         {% empty %}
             <li>Нет доступных объектов.</li>
         {% endfor %}
-        <li class="quiz__item">
+        <li class="quiz__item quiz__item-finish">
             <h3 class="finalMes">Ты молодец!!!</h3>
             <button class="btn quiz__end">Закончить</button>
         </li>

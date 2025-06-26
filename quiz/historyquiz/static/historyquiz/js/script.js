@@ -11,6 +11,9 @@ const btnQuestionAnswer = document.querySelectorAll('.quiz__btn-answer')
 const startQuiz = document.querySelector('.start_quiz')
 const endQuiz = document.querySelector('.quiz__end')
 const finalMessage = document.querySelector('.finalMes')
+const finalQuizItem = document.querySelector('.quiz__item-finish')
+const answers_text = document.querySelectorAll('.quiz__item input[type="text"]')
+const answers_mes = document.querySelectorAll('.quiz__answer_mes')
 
 let index_quiz = 0
 let answers = {}
@@ -22,6 +25,20 @@ function startOver() {
     correctly_answered = 0
     answers = {}
     quizList.style.transform = 'translateX(0)'
+
+    answers_mes.forEach(elem=>{
+        elem.style.color = "#771616"
+        elem.style.display = "none"
+
+        elem.innerHTML = "Правильный ответ:<br>" + elem.parentNode.querySelector('input').dataset.correct
+
+    })
+
+    answers_text.forEach(elem => {
+        elem.disabled = false
+        elem.value = ""
+    })
+
     AllRadioButton.forEach(elem => {
         elem.checked = false
         elem.disabled = false
@@ -93,6 +110,13 @@ function ShowFinalMessage(){
     }
 }
 
+function checkAnswer (answer1, answer2) {
+    nor_answer1 = answer1.toLowerCase().trim().replace(/\s+/g, ' ').replace(/[-–—]/g, '-')
+    nor_answer2 = answer2.toLowerCase().trim().replace(/\s+/g, ' ').replace(/[-–—]/g, '-')
+
+    return nor_answer1 == nor_answer2
+}
+
 quizList.style.width = String(quizItems.length * 100) + '%'
 allElementsShuffle.forEach(element => {
     if (element.children.length > 0) {
@@ -101,6 +125,8 @@ allElementsShuffle.forEach(element => {
 })
 
 shuffleChildren(quizList)
+console.log(finalQuizItem)
+quizList.appendChild(finalQuizItem)
 
 allElementsShuffle.forEach(element => {
     if (element.children.length > 0) {
@@ -129,30 +155,52 @@ quizQuestions.forEach(elem => {
     const _btnQuestionAnswer = elem.querySelector('.quiz__btn-answer')
     const _answers = elem.querySelectorAll('input[type="radio"]')
     const _nextQuestion = elem.querySelector('.next_question')
+    const _answers_text = elem.querySelector('input[type="text"]')
+    const _answers_mes = elem.querySelector('.quiz__answer_mes')
 
-
-    _answers.forEach(_elem => {
-        _elem.addEventListener('change', () => {
+    if (_answers.length > 0){
+        _answers.forEach(_elem => {
+            _elem.addEventListener('change', () => {
+                _btnQuestionAnswer.disabled = false
+            })
+        })
+    } else if (_answers_text) {
+        _answers_text.addEventListener('input', function () {
             _btnQuestionAnswer.disabled = false
         })
-    })
-
+    }
     _btnQuestionAnswer.addEventListener('click', () => {
-        _answers.forEach(_elem => {
-            if (_elem.checked) {
-                if (_elem.dataset.correct == "1") {
-                    answers[elem.dataset.id] = true
-                    correctly_answered += 1
-                } else {
-                    answers[elem.dataset.id] = false
-                    _elem.parentNode.classList.add('false_answer')
+        if (_answers.length > 0){
+            _answers.forEach(_elem => {
+                if (_elem.checked) {
+                    if (_elem.dataset.correct == "1") {
+                        answers[elem.dataset.id] = true
+                        correctly_answered += 1
+                    } else {
+                        answers[elem.dataset.id] = false
+                        _elem.parentNode.classList.add('false_answer')
+                    }
                 }
+                if (_elem.dataset.correct == "1") {
+                    _elem.parentNode.classList.add('true_answer')
+                }
+                _elem.disabled = true
+            })
+        } else if (_answers_text) {
+            let _correctly_answered = _answers_text.dataset.correct
+            if (checkAnswer(_answers_text.value, _correctly_answered)) {
+                _answers_mes.style.display = "block"
+                _answers_mes.innerHTML = "Все правильно!!!"
+                _answers_mes.style.color = "#327716"
+                correctly_answered += 1
+                answers[elem.dataset.id] = true
+            } else {
+                _answers_mes.style.display = "block"
+                answers[elem.dataset.id] = false
             }
-            if (_elem.dataset.correct == "1") {
-                _elem.parentNode.classList.add('true_answer')
-            }
-            _elem.disabled = true
-        })
+
+            _answers_text.disabled = true
+        }
         _btnQuestionAnswer.style.display = "none"
         _nextQuestion.style.display = "block"
     })

@@ -15,7 +15,7 @@ class TopicQuestion(models.Model):
         return self.name
 
 class CategoryQuestions(models.Model):
-    topic = models.ForeignKey(TopicQuestion, on_delete=models.CASCADE, related_name='topic')
+    topic = models.ForeignKey(TopicQuestion, on_delete=models.CASCADE, related_name='topic', null=True)
     name = models.CharField(max_length=256, verbose_name='Название категории')
     slug = models.SlugField(max_length=320, unique=True, verbose_name='Слаг (URL)')
 
@@ -27,10 +27,24 @@ class CategoryQuestions(models.Model):
     def __str__(self):
         return self.name
     
+#_____________
+
+class AnswerType(models.TextChoices):
+    ANSWER_OPTION = 'answer_options', 'Варианты ответов'
+    TYPED_ANSWER = 'typed_answer', 'Напечатанный ответ'
+
+#_____________
+    
 class Question(models.Model):
+
     text = models.TextField()
     category = models.ForeignKey(CategoryQuestions, on_delete=models.CASCADE, related_name='questions')
     image = models.ImageField(upload_to='questions_images/', blank=True, null=True)
+
+    #_____________
+    answer_type = models.CharField(max_length=32, choices=AnswerType.choices, default=AnswerType.ANSWER_OPTION)
+    #___________
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     favorited_by = models.ManyToManyField(
