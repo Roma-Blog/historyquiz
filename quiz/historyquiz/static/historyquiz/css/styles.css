@@ -6,6 +6,8 @@ body{
     font-family: sans-serif;
     background-color: #b6e0e9;
     color: #173f48;
+    margin: 0 auto;
+    max-width: 512px;
 }
 header{
     position: fixed;
@@ -152,6 +154,11 @@ h2{
 label:has(input[type="radio"]:checked) {
     background-color: #A6A240; 
     color: white; 
+}
+.quiz{
+    max-width: 512px;
+    overflow: hidden;
+    margin: 0 auto;
 }
 .quiz div label.false_answer {
     background-color: #771616;

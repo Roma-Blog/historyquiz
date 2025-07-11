@@ -90,7 +90,7 @@ function sendAnswer(answer_data) {
 
 function moveListQuiz(){
     index_quiz += 1
-    quizList.style.transform = 'translateX(-' + String( index_quiz * 100) + 'vw)'
+    quizList.style.transform = 'translateX(-' + String( index_quiz * (quizList.offsetWidth/quizItems.length)) + 'px)'
 
     if (index_quiz == count_question) {
         sendAnswer(answers)
